@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - AirQuality
 struct AirQuality: Codable, Identifiable {
-    var id = UUID()
+    let id = UUID()
     let coord: Coordinates
     let list: [ListData]
 }

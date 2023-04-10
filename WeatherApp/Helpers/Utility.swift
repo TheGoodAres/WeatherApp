@@ -39,7 +39,7 @@ func getFormattedDate(from date: Int, type: Int) -> String {
     return dateFormatter.string(from: date as Date)
 }
 
-//struct used to get the asyng image from the website
+//struct used to get the async image from the website
 struct IconFromWebsite: View {
     var url: String
     var body: some View {

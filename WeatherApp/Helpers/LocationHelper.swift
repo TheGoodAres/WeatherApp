@@ -59,7 +59,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject{
             break
 
         case .restricted, .denied: // Location services currently unavailable.
-            // Insert code here of what should happen when Location services are NOT authorized
             authorizationStatus = .restricted
             authorizationStatus = .denied
             break
@@ -74,7 +73,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject{
         }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-           // Insert code to handle location updates
        }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error: \(error.localizedDescription)")

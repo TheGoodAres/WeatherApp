@@ -20,7 +20,10 @@ struct SearchView: View {
 
             VStack {
                 TextField("Enter New Location", text: self.$location, onCommit: {
-
+                    ///the following will yse CLGeocoder() to get the coordinates for a string address,
+                    ///if the coordinates are returned, the weather data and the air pollution data will be loaded from the OpenWeather API
+                    ///once that is done, the currentLocationDisabled variable will be set to true, disabling the updating of the data for the user's current location
+                    ///the view will also dismiss itself once this is done
                     CLGeocoder().geocodeAddressString(location) { (placemarks, error) in
 
 
@@ -34,8 +37,10 @@ struct SearchView: View {
                                     print(error)
                                 }
                             }
+                            modelData.currentLocationDisabled = true
                             dismiss()
                         }
+                        print(error)
 
 
                     }//GEOCorder
@@ -48,8 +53,7 @@ struct SearchView: View {
                     .fixedSize()
                     .font(.custom("Ariel", size: 26))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                //.background(Color("background"))
-                .cornerRadius(15) // TextField
+                    .cornerRadius(15) // TextField
 
             }//VStak
 

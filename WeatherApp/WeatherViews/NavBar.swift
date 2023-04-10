@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct NavBar: View {
+    @State private var selectedTab = 0
+    private var tabBinding: Binding<Int> {
+            Binding(
+                get: { self.selectedTab },
+                set: { newValue in
+                    withAnimation(.spring()) {
+                        self.selectedTab = newValue
+                    }
+                }
+            )
+        }
     var body: some View {
-        TabView {
+        TabView(selection: tabBinding){
             Home()
                 .tabItem {
                 VStack {
@@ -17,6 +28,7 @@ struct NavBar: View {
                     Text("City")
                 }
             }
+                .tag(0)
             CurrentWeatherView()
                 .tabItem {
                 VStack {
@@ -24,6 +36,7 @@ struct NavBar: View {
                     Text("WeatherNow")
                 }
             }
+                .tag(1)
 
             HourlyView()
                 .tabItem {
@@ -32,6 +45,7 @@ struct NavBar: View {
                     Text("Hourly Summary")
                 }
             }
+                .tag(2)
             ForecastView()
                 .tabItem {
                 VStack {
@@ -39,6 +53,7 @@ struct NavBar: View {
                     Text("Forecast")
                 }
             }
+                .tag(3)
             PollutionView()
                 .tabItem {
                 VStack {
@@ -46,9 +61,10 @@ struct NavBar: View {
                     Text("Pollution")
                 }
             }
+                .tag(4)
         }.onAppear {
             UITabBar.appearance().isTranslucent = false
-            
+
         }
     }
 }

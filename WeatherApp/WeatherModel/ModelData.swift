@@ -11,14 +11,16 @@ class ModelData: ObservableObject {
     @Published var forecast: Forecast?
     @Published var airQuality: AirQuality?
     @Published var location: Location?
-    private var cacheExpirationData: Date = Date()
-    @Published var searchedCity = false
+    @Published var currentLocationDisabled = false
     @Published var dataLoaded = false
+    @Published var lastFetchDate: Date?
+    let oneHour: TimeInterval = 60 * 60
 
     let apiKey = "d23f70c3225fd0fa59564d2ffaded0fa"
 
     init() {
         loadUserDefaults()
+        print(lastFetchDate)
     }
 
     //function used to load the data from UserDefaults
@@ -56,10 +58,17 @@ class ModelData: ObservableObject {
 
             }
         }
-        if let savedSearchedCity = UserDefaults.standard.data(forKey: "searchedCity") {
+        if let savedSearchedCity = UserDefaults.standard.data(forKey: "currentLocationDisabled") {
             if let decodedItems = try? JSONDecoder().decode(Bool.self, from: savedSearchedCity) {
-                searchedCity = decodedItems
+                currentLocationDisabled = decodedItems
             }
+        }
+        if let savedLastFetchDate = UserDefaults.standard.data(forKey: "lastFetchedDate") {
+            if let decodedItems = try? JSONDecoder().decode(Date.self, from: savedLastFetchDate) {
+                lastFetchDate = decodedItems
+            }
+        } else {
+            lastFetchDate = Date(timeIntervalSince1970: 0)
         }
         if (!availableUserDefaults) {
             self.forecast = load("london.json")
@@ -87,8 +96,11 @@ class ModelData: ObservableObject {
         if let encodedLocation = try? JSONEncoder().encode(location) {
             UserDefaults.standard.set(encodedLocation, forKey: "location")
         }
-        if let encodedSearchedCity = try? JSONEncoder().encode(searchedCity) {
-            UserDefaults.standard.set(encodedSearchedCity, forKey: "searchedCity")
+        if let encodedSearchedCity = try? JSONEncoder().encode(currentLocationDisabled) {
+            UserDefaults.standard.set(encodedSearchedCity, forKey: "currentLocationDisabled")
+        }
+        if let encodedLastFetchDate = try? JSONEncoder().encode(lastFetchDate) {
+            UserDefaults.standard.set(encodedLastFetchDate, forKey: "lastFetchedDate")
         }
     }
     //The following 2 functions will load data from files
@@ -136,61 +148,83 @@ class ModelData: ObservableObject {
     }
     //The following 2 functions will call the OpenWeather API and get the required data from it, once received, it will decode the data and then save it to UserDefaults
     func loadData(lat: Double, lon: Double) async throws -> Forecast {
-        let url = URL(string: "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(lon)&units=metric&appid=\(apiKey)")
-        let session = URLSession(configuration: .default)
+        if shouldUpdate(lat: lat, lon: lon) {
+            let url = URL(string: "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(lon)&units=metric&appid=\(apiKey)")
+            let session = URLSession(configuration: .default)
 
-        let (data, _) = try await session.data(from: url!)
+            let (data, _) = try await session.data(from: url!)
 
-        do {
-            let forecastData = try JSONDecoder().decode(Forecast.self, from: data)
-            DispatchQueue.main.async {
-                self.forecast = forecastData
+            do {
+                let forecastData = try JSONDecoder().decode(Forecast.self, from: data)
+                DispatchQueue.main.async {
+                    self.forecast = forecastData
 
-                Task {
-                    await self.updateLocation(lat: lat, lon: lon)
+                    Task {
+                        await self.updateLocation(lat: lat, lon: lon)
 
-                    self.saveToUserDefaults()
-                    self.dataLoaded = true
+                        self.saveToUserDefaults()
+                        self.dataLoaded = true
+                        self.lastFetchDate = Date()
+
+                        print("Data Loaded")
+                    }
                 }
+                return forecastData
+            } catch {
+                print(error)
+                throw error
             }
-            return forecastData
-        } catch {
-            print(error)
-            throw error
+        } else {
+            return self.forecast!
         }
+
     }
     func loadAirData(lat: Double, lon: Double) async throws -> AirQuality {
-        let url = URL(string: "https://api.openweathermap.org/data/2.5/air_pollution?lat=\(lat)&lon=\(lon)&units=metric&appid=\(apiKey)")
-        let session = URLSession(configuration: .default)
+        if shouldUpdate(lat: lat, lon: lon) {
 
-        let (data, _) = try await session.data(from: url!)
+            let url = URL(string: "https://api.openweathermap.org/data/2.5/air_pollution?lat=\(lat)&lon=\(lon)&units=metric&appid=\(apiKey)")
+            let session = URLSession(configuration: .default)
 
-        do {
-            let airData = try JSONDecoder().decode(AirQuality.self, from: data)
-            DispatchQueue.main.async {
-                self.airQuality = airData
-                self.saveToUserDefaults()
+            let (data, _) = try await session.data(from: url!)
+
+            do {
+                let airData = try JSONDecoder().decode(AirQuality.self, from: data)
+                DispatchQueue.main.async {
+                    self.airQuality = airData
+                    self.saveToUserDefaults()
+                    self.lastFetchDate = Date()
+
+                }
+
+                return airData
+            } catch {
+                print(error)
+                throw error
             }
 
-            return airData
-        } catch {
-            print(error)
-            throw error
+        } else {
+            return self.airQuality!
         }
     }
 
     func loadCurrentLocationData(locationManager: LocationManager) async {
-        if !searchedCity {
+        if !currentLocationDisabled {
             if locationManager.locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.locationManager.authorizationStatus == .authorizedAlways {
+
                 if let lat = locationManager.locationManager.location?.coordinate.latitude, let lon = locationManager.locationManager.location?.coordinate.longitude {
-                    do {
-                        try await loadData(lat: lat, lon: lon)
-                        await updateLocation(lat: lat, lon: lon)
-                        DispatchQueue.main.async{
-                            self.dataLoaded = true
+                    if shouldUpdate(lat: lat, lon: lon) {
+                        do {
+                            try await loadData(lat: lat, lon: lon)
+                            await updateLocation(lat: lat, lon: lon)
+                            DispatchQueue.main.async {
+                                self.dataLoaded = true
+                                self.lastFetchDate = Date()
+
+                            }
+                            print("CurrentLocationUpdated")
+                        } catch {
+                            print(error.localizedDescription)
                         }
-                    } catch {
-                        print(error.localizedDescription)
                     }
                 }
             }
@@ -208,5 +242,18 @@ class ModelData: ObservableObject {
             }
         }
 
+    }
+
+    func shouldUpdate(lat: Double, lon: Double) -> Bool {
+        let currentDate = Date()
+        print(currentDate.timeIntervalSince(lastFetchDate!) <= oneHour)
+        print((location?.longitude == lon && location?.latitude == lat))
+        if ((location?.longitude == lon && location?.latitude == lat) && (currentDate.timeIntervalSince(lastFetchDate!) <= oneHour)) {
+            print("shouldNotUpdate")
+            return false
+        } else {
+            print("Should Update")
+            return true
+        }
     }
 }

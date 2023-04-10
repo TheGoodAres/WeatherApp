@@ -10,20 +10,22 @@ import SwiftUI
 
 struct ForecastView: View {
     @EnvironmentObject var modelData: ModelData
-    @State var locationString: String = "No location"
     var body: some View {
         ZStack {
+            
             Image("background2")
                 .resizable()
                 .opacity(0.8)
                 .ignoresSafeArea()
             VStack {
+                Spacer()
+                ///display the location name
                 Text(modelData.location?.name ?? "No location available")
                     .font(.largeTitle)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
                     .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-
+                ///For all the available daily data, they will be displayed using the DailyView() View
                 List {
                     ForEach(modelData.forecast!.daily) { day in
                         DailyView(day: day)
@@ -36,19 +38,12 @@ struct ForecastView: View {
                             .opacity(0.2)
                     }
                 }
-            
-                .background{
+
+                    .background {
                     Color.white
                         .opacity(0.5)
                 }
                     .scrollContentBackground(.hidden)
-            }
-        }
-
-            .onAppear {
-            Task.init {
-                self.locationString = await getLocFromLatLong(lat: modelData.forecast!.lat, lon: modelData.forecast!.lon)
-
             }
         }
     }

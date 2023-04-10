@@ -11,7 +11,7 @@ import CoreLocation
 struct Home: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var modelData: ModelData
-    
+
     @State var isSearchOpen = false
     @State var showLocationSettingsAlert = false
 
@@ -24,37 +24,39 @@ struct Home: View {
             VStack {
                 Spacer()
                 Spacer()
+                
                 HStack {
-                    //Change location button
+                    ///When the button is pressed,  it will open the SearchView used to change the location of the data
                     Button {
                         isSearchOpen = true
-                        modelData.searchedCity = true
                     } label: {
                         Text("Change location")
                             .multilineTextAlignment(.center)
                             .font(.largeTitle)
                             .bold()
                     }
-                    //use current user location button
+                    ///When the button is pressed, if location manager authorization status is denied or restricted, it will prompt the user to give permission
+                    ///otherwise, it will load the current location data for the usera
                     Button {
                         if (locationManager.locationManager.authorizationStatus == .denied || locationManager.locationManager.authorizationStatus == .restricted) {
                             showLocationSettingsAlert = true
                         } else {
                             print("current location used")
-                            modelData.searchedCity = false
+                            modelData.currentLocationDisabled = false
                             Task {
                                 await modelData.loadCurrentLocationData(locationManager: locationManager)
                             }
                         }
                     } label: {
-                        //when the current location is turned on (searchedCity == false), the icon will be a circle with an arrow
-                        //when the current location is turned off (searchedCity == true), the presivious icon will be slashed
-                        Image(systemName: modelData.searchedCity ? "location.slash.circle" : "location.circle")
+                        ///when the current location is turned on (searchedCity == false), the icon will be a circle with an arrow
+                        ///when the current location is turned off (searchedCity == true), the presivious icon will be slashed
+                        Image(systemName: modelData.currentLocationDisabled ? "location.slash.circle" : "location.circle")
                             .resizable()
                             .frame(width: 50, height: 50)
                     }
                 }
                 Spacer()
+                /// location name and formatted date of the data
                 VStack {
                     Spacer()
                     Text(modelData.location?.name ?? "No location available")
@@ -66,6 +68,7 @@ struct Home: View {
                     Spacer()
                 }
                 Spacer()
+                ///current temperature, humidity and pressure
                 VStack {
                     Spacer()
                     Text("Temp: \(modelData.forecast?.current.temp.rounded().formatted() ?? "0")°C")
@@ -76,6 +79,7 @@ struct Home: View {
                     Spacer()
                 }
                 Spacer()
+                ///weather description and icon
                 HStack {
                     Label {
                         Text(modelData.forecast?.current.weather[0].weatherDescription.rawValue ?? "Weather description unavailable")
@@ -89,7 +93,8 @@ struct Home: View {
             .sheet(isPresented: $isSearchOpen) {
             SearchView()
         }
-            .alert(isPresented: $showLocationSettingsAlert) {
+        ///when this alert it's shown, it alerts that the app does not have permission to access the user's location. If guides the user to how to enable the permission, if the user presses the "Open Settings" button, the system app main page is opened.
+        .alert(isPresented: $showLocationSettingsAlert) {
             Alert(
                 title: Text("Location Access Required"),
                 message: Text("Please enable location access for this app in Settings.\n Privacy & Security -> Location Services -> App name "),
@@ -97,24 +102,27 @@ struct Home: View {
                 secondaryButton: .cancel()
             )
         }
-            .task{
-                modelData.loadUserDefaults()
+            .onAppear {
+            Task {
+                if modelData.currentLocationDisabled {
+                    do {
+                        try await modelData.loadData(lat: modelData.forecast?.lat ?? 0, lon: modelData.forecast?.lon ?? 0)
+                        try await modelData.loadAirData(lat: modelData.forecast?.lat ?? 0, lon: modelData.forecast?.lon ?? 0)
+                    } catch {
+                        print(error)
+                    }
+                } else {
+                    await modelData.loadCurrentLocationData(locationManager: locationManager)
+                }
             }
-
+        }
 
     }
-
-
-
-
-
+    ///When called, this function will take the user to the settings page
     func openAppSettings() {
-//        if let url = URL(string: UIApplication.openSettingsURLString) {
-//            UIApplication.shared.open(url)
-//        }
         guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-               return
-           }
+            return
+        }
 
         if UIApplication.shared.canOpenURL(settingsUrl) {
             UIApplication.shared.open(settingsUrl)

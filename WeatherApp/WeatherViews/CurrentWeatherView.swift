@@ -30,7 +30,6 @@ struct CurrentWeatherView: View {
                         .padding()
                         .font(.largeTitle)
                     VStack {
-                        HStack {
                             Label {
                                 Text(modelData.forecast!.current.weather[0].weatherDescription.rawValue.capitalized)
                                     .foregroundColor(.black)
@@ -38,9 +37,9 @@ struct CurrentWeatherView: View {
                             } icon: {
                                 IconFromWebsite(url: modelData.forecast?.current.weather[0].icon ?? "01n.png")
                             }
-                        }
                     }
                     VStack {
+                        ///high, low and feels like temperature
                         VStack(spacing:50) {
                             
                             HStack {
@@ -56,6 +55,7 @@ struct CurrentWeatherView: View {
                     }
                     Spacer()
                     VStack(spacing:10){
+                        ///wind speed, direction, humidity and pressure
                         Group {
                             VStack(spacing:50) {
                                 HStack {
@@ -74,6 +74,7 @@ struct CurrentWeatherView: View {
                                 }
                             }
                         }
+                        ///sunset and sunrise times and icons
                         HStack {
                             Spacer()
                             Image(systemName: "sunset.fill").renderingMode(.original)
