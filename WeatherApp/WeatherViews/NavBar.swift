@@ -8,19 +8,9 @@
 import SwiftUI
 
 struct NavBar: View {
-    @State private var selectedTab = 0
-    private var tabBinding: Binding<Int> {
-            Binding(
-                get: { self.selectedTab },
-                set: { newValue in
-                    withAnimation(.spring()) {
-                        self.selectedTab = newValue
-                    }
-                }
-            )
-        }
+    
     var body: some View {
-        TabView(selection: tabBinding){
+        TabView {
             Home()
                 .tabItem {
                 VStack {
@@ -66,6 +56,8 @@ struct NavBar: View {
             UITabBar.appearance().isTranslucent = false
 
         }
+            
+
     }
 }
 

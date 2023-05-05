@@ -1,12 +1,6 @@
-//
-//  WindDirHelper.swift
-//  Coursework2
-//
-//  Created by G Lukka.
-//
-
 import Foundation
 
+//converts degrees into directions, N, NNE, etc.
 func convertDegToCardinal(deg: Int) -> String {
     let cardinalDir = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW","N"]
     

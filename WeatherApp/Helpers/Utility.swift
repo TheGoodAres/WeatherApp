@@ -9,28 +9,17 @@
 import Foundation
 import SwiftUI
 
-//func used to get the formatted cuurent date
-func getFormattedDate() -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "MMMM dd','yyyy 'at' HH a"
-    dateFormatter.amSymbol = "AM"
-    dateFormatter.pmSymbol = "PM"
-    let date = Date.now
-
-    return dateFormatter.string(from: date)
-}
-
 //function used to get the formatted date from the unix date returned by the api
 func getFormattedDate(from date: Int, type: Int) -> String {
     let dateFormatter = DateFormatter()
     if(type == 0) {
-        dateFormatter.dateFormat = "MMMM dd','yyyy 'at' HH a"
+        dateFormatter.dateFormat = "MMMM dd','yyyy 'at' HH a" //"month name" "day number", "year" at "hour number" "AM/PM(based on the time)" "April 25, 2023 at 08AM"
     } else if(type == 1) {
-        dateFormatter.dateFormat = "HH:ss a"
+        dateFormatter.dateFormat = "HH:ss a"//"hour":"seconds" "AM/PM", "20:18 PM"
     } else if(type == 2) {
-        dateFormatter.dateFormat = "HH a\n EE"
+        dateFormatter.dateFormat = "HH a\n EE"//"hour" "AM/PM" "short day name", "09 AM Tue"
     } else if(type == 3) {
-        dateFormatter.dateFormat = "EEEE dd"
+        dateFormatter.dateFormat = "EEEE dd" // "full day name" "date day number", "Tuesday 25"
     }
     dateFormatter.amSymbol = "AM"
     dateFormatter.pmSymbol = "PM"
@@ -43,14 +32,10 @@ func getFormattedDate(from date: Int, type: Int) -> String {
 struct IconFromWebsite: View {
     var url: String
     var body: some View {
-        return AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(url)@2x.png")) { image in
-            image
-                .resizable()
-                .frame(width: 75, height: 75)
-
-        } placeholder: {
-            ProgressView()
-        }
+        if let imageUrl = URL(string:"https://openweathermap.org/img/wn/\(url)@2x.png"){
+            CustomAsyncImage(url: imageUrl)
+            .frame(width:75, height: 75)
+        } 
     }
 }
 // Struct used to customise the Label view, it makes the icon and the text stack vertically rather than horizontally

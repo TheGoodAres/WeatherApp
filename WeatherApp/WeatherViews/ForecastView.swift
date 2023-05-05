@@ -35,13 +35,13 @@ struct ForecastView: View {
                         .listRowBackground(Color.clear)
                         .background {
                         Color.white
-                            .opacity(0.2)
+                                .opacity(0.3)
                     }
                 }
 
                     .background {
                     Color.white
-                        .opacity(0.5)
+                            .opacity(0.6)
                 }
                     .scrollContentBackground(.hidden)
             }

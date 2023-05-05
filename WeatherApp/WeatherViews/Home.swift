@@ -21,10 +21,9 @@ struct Home: View {
                 .resizable()
                 .opacity(0.8)
                 .ignoresSafeArea()
-            VStack {
+            VStack(spacing: 10) {
                 Spacer()
-                Spacer()
-                
+
                 HStack {
                     ///When the button is pressed,  it will open the SearchView used to change the location of the data
                     Button {
@@ -61,6 +60,7 @@ struct Home: View {
                     Spacer()
                     Text(modelData.location?.name ?? "No location available")
                         .font(.title)
+                        .fontWeight(.medium)
                     Spacer()
                     Text(getFormattedDate(from: modelData.forecast?.current.dt ?? 0, type: 0))
                         .font(.title)
@@ -78,26 +78,27 @@ struct Home: View {
                     Text("Pressure: \(modelData.forecast?.current.pressure ?? 0) hPa")
                     Spacer()
                 }
-                Spacer()
+                .fontWeight(.medium)
                 ///weather description and icon
                 HStack {
                     Label {
-                        Text(modelData.forecast?.current.weather[0].weatherDescription.rawValue ?? "Weather description unavailable")
+                        Text(modelData.forecast?.current.weather[0].weatherDescription.rawValue.capitalized ?? "Weather description unavailable")
                     } icon: {
                         IconFromWebsite(url: modelData.forecast?.current.weather[0].icon ?? "01n.png")
                     }
                 }
+                .fontWeight(.medium)
             }
         }
 
             .sheet(isPresented: $isSearchOpen) {
-            SearchView()
+            SearchView(showSheet: $isSearchOpen)
         }
         ///when this alert it's shown, it alerts that the app does not have permission to access the user's location. If guides the user to how to enable the permission, if the user presses the "Open Settings" button, the system app main page is opened.
         .alert(isPresented: $showLocationSettingsAlert) {
             Alert(
                 title: Text("Location Access Required"),
-                message: Text("Please enable location access for this app in Settings.\n Privacy & Security -> Location Services -> App name "),
+                message: Text("Please enable location access for this app in Settings.\n Privacy & Security -> Location Services -> WeatherApp "),
                 primaryButton: .default(Text("Open Settings"), action: openAppSettings),
                 secondaryButton: .cancel()
             )

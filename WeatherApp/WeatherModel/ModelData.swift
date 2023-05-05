@@ -14,13 +14,13 @@ class ModelData: ObservableObject {
     @Published var currentLocationDisabled = false
     @Published var dataLoaded = false
     @Published var lastFetchDate: Date?
+    @Published var error: Error?
     let oneHour: TimeInterval = 60 * 60
 
     let apiKey = "d23f70c3225fd0fa59564d2ffaded0fa"
 
     init() {
         loadUserDefaults()
-        print(lastFetchDate)
     }
 
     //function used to load the data from UserDefaults
@@ -103,7 +103,7 @@ class ModelData: ObservableObject {
             UserDefaults.standard.set(encodedLastFetchDate, forKey: "lastFetchedDate")
         }
     }
-    //The following 2 functions will load data from files
+    ////loads data from local json file, decodes it  and returns a Forecast
     func load<Forecast: Decodable>(_ filename: String) -> Forecast {
         let data: Data
 
@@ -125,6 +125,7 @@ class ModelData: ObservableObject {
             fatalError("Couldn't parse \(filename) as \(Forecast.self):\n\(error)")
         }
     }
+    //loads data from local json file, decodes it  and returns airQuality
     func loadLocalAir<AirQuality: Decodable>(_ filename: String) -> AirQuality {
         let data: Data
 
@@ -171,7 +172,9 @@ class ModelData: ObservableObject {
                 }
                 return forecastData
             } catch {
-                print(error)
+                DispatchQueue.main.async {
+                    self.error = error
+                }
                 throw error
             }
         } else {
@@ -179,6 +182,8 @@ class ModelData: ObservableObject {
         }
 
     }
+    
+    ///if it should update, it will get the airQuality data, decode it and set it , save the currrent time as the lastFetchDate and it will save all the data to userDefaultts
     func loadAirData(lat: Double, lon: Double) async throws -> AirQuality {
         if shouldUpdate(lat: lat, lon: lon) {
 
@@ -191,14 +196,16 @@ class ModelData: ObservableObject {
                 let airData = try JSONDecoder().decode(AirQuality.self, from: data)
                 DispatchQueue.main.async {
                     self.airQuality = airData
-                    self.saveToUserDefaults()
                     self.lastFetchDate = Date()
+                    self.saveToUserDefaults()
 
                 }
 
                 return airData
             } catch {
-                print(error)
+                DispatchQueue.main.async {
+                    self.error = error
+                }
                 throw error
             }
 
@@ -206,7 +213,9 @@ class ModelData: ObservableObject {
             return self.airQuality!
         }
     }
-
+///if the current location isn't disabled and the authorization status is authorizedWhenInUse or authorizedAlways, it will get the current coordinates of the users location
+    ///and if shouldUpdate() returns true, it will get new weather and air quality data
+    ///it will update the location, make dataLoaded true and update the lastFetchDate to the Date() the call happened
     func loadCurrentLocationData(locationManager: LocationManager) async {
         if !currentLocationDisabled {
             if locationManager.locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.locationManager.authorizationStatus == .authorizedAlways {
@@ -221,8 +230,11 @@ class ModelData: ObservableObject {
                                 self.lastFetchDate = Date()
 
                             }
-                            print("CurrentLocationUpdated")
+                            print("CurrentLocationUpdatede2")
                         } catch {
+                            DispatchQueue.main.async {
+                                self.error = error
+                            }
                             print(error.localizedDescription)
                         }
                     }
@@ -231,7 +243,9 @@ class ModelData: ObservableObject {
         }
     }
 
-
+///when called, it will get the location name by calling getLocFromLatLong()
+    ///then it will update the location name of this class
+    ///it will then save it to user defaults
     func updateLocation(lat: Double, lon: Double) async {
         DispatchQueue.main.async {
             Task {
@@ -244,6 +258,10 @@ class ModelData: ObservableObject {
 
     }
 
+
+    ///this function is used to check if the weather and air quality data should be updated
+    ///if the difference between the latest data fetched and the current time is less than an hour and
+    ///the location hasn't changed, then the data should not be updated
     func shouldUpdate(lat: Double, lon: Double) -> Bool {
         let currentDate = Date()
         print(currentDate.timeIntervalSince(lastFetchDate!) <= oneHour)

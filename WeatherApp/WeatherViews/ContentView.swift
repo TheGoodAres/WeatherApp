@@ -12,6 +12,7 @@ struct ContentView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var modelData: ModelData
     @State private var isSplashActive = true
+    @State private var showErrorAlert = false
     var body: some View {
         ///The following ZStack shows the SplashView when isSplashActive is true, otherwise the NavBar view is shown
         ZStack {
@@ -57,6 +58,20 @@ struct ContentView: View {
                         break
                 }
                 
+            }
+            .alert(isPresented: $showErrorAlert) {
+            Alert(title: Text("There was an error loading the data"),
+                  message: Text(modelData.error?.localizedDescription ?? "Unknown error."),
+                  dismissButton: .default(Text("OK")) {
+                      modelData.error = nil
+                    showErrorAlert = false
+                  }
+            )
+        }
+            .onReceive(modelData.$error) {newValue in
+                if newValue != nil {
+                    showErrorAlert = true
+                }
             }
     }
     ///This function will present the user with the request to access their location when the authorization status is not determined

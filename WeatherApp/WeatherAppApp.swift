@@ -14,8 +14,8 @@ struct WeatherAppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-//            CustomTabView()
-                .environmentObject(modelData)
+            // CustomTabView()
+            .environmentObject(modelData)
                 .environmentObject(locationManager)
         }
     }

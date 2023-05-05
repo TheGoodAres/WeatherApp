@@ -20,7 +20,7 @@ struct SearchView: View {
 
             VStack {
                 TextField("Enter New Location", text: self.$location, onCommit: {
-                    ///the following will yse CLGeocoder() to get the coordinates for a string address,
+                    ///the following will use CLGeocoder() to get the coordinates for a string address,
                     ///if the coordinates are returned, the weather data and the air pollution data will be loaded from the OpenWeather API
                     ///once that is done, the currentLocationDisabled variable will be set to true, disabling the updating of the data for the user's current location
                     ///the view will also dismiss itself once this is done
@@ -35,12 +35,18 @@ struct SearchView: View {
                                     try await modelData.loadAirData(lat: lat, lon: lon)
                                 } catch {
                                     print(error)
+                                    DispatchQueue.main.async {
+                                        modelData.error = error
+                                    }
                                 }
                             }
                             modelData.currentLocationDisabled = true
                             dismiss()
                         }
-                        print(error)
+                        print(error as Any)
+                        DispatchQueue.main.async {
+                            modelData.error = error
+                        }
 
 
                     }//GEOCorder

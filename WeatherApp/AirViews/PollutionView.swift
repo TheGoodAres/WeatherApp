@@ -16,15 +16,20 @@ struct PollutionView: View {
                 .opacity(0.8)
 
                 .ignoresSafeArea()
-            VStack {
-                VStack {
+            VStack(spacing:80) {
+                VStack(spacing: 5) {
                     Spacer()
                     Text(modelData.location?.name ?? "No location available")
                         .multilineTextAlignment(.center)
                         .font(.largeTitle)
                         .fontWeight(.medium)
                         .padding()
-                    VStack {
+                    Text("\(modelData.forecast?.current.temp.rounded().formatted() ?? "0")ºC")
+                        .multilineTextAlignment(.center)
+                        .font(.largeTitle)
+                        .fontWeight(.medium)
+                        .padding()
+                    VStack(spacing: 20) {
                         HStack {
                             Label {
                                 Text(modelData.forecast?.current.weather[0].weatherDescription.rawValue.capitalized ?? "No description available")
@@ -33,23 +38,21 @@ struct PollutionView: View {
                                 IconFromWebsite(url: modelData.forecast?.current.weather[0].icon ?? "01n.png")
                             }
                         }
-                        VStack {
+                        VStack(spacing: 40) {
                             HStack {
                                 Spacer()
                                 Text("H: \(modelData.forecast?.daily[0].temp.max.rounded().formatted() ?? "0") ºC")
                                 Spacer()
-                                Text("L: \(modelData.forecast?.daily[0].temp.min.rounded().formatted() ?? "0") ºC")
+                                Text("Low: \(modelData.forecast?.daily[0].temp.min.rounded().formatted() ?? "0") ºC")
                                 Spacer()
                             }
                             Text("Feels Like: \((Int)(modelData.forecast!.current.feelsLike))ºC")
                                 .foregroundColor(.black)
                         }
 
-                    }
-                    VStack {
                         Text("Air Quality Data:")
+                            .font(.system(size: 25, weight: .medium))
                     }
-                        .font(.system(size: 40, weight: .heavy))
                     HStack {
                         Label {
                             Text("\(modelData.airQuality?.list[0].components.no2.rounded().formatted() ?? "0.0")")
@@ -98,8 +101,8 @@ struct PollutionView: View {
                     Spacer()
                 }
             }
-            .foregroundColor(.black)
-            .shadow(color:.black, radius:0.5)
+                .foregroundColor(.black)
+                .shadow(color: .black, radius: 0.5)
         }.ignoresSafeArea()
     }
 }

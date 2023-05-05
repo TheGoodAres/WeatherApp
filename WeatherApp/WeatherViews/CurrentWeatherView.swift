@@ -18,12 +18,10 @@ struct CurrentWeatherView: View {
 
             VStack {
                 Spacer()
-                Spacer()
                 Text(modelData.location?.name ?? "No location available")
                     .multilineTextAlignment(.center)
                     .font(.largeTitle)
                     .padding()
-                Spacer()
                 Spacer()
                 VStack {
                     Text("\((Int)(modelData.forecast!.current.temp))ºC")
@@ -44,17 +42,18 @@ struct CurrentWeatherView: View {
                             
                             HStack {
                                 Spacer()
-                                Text("H: \(modelData.forecast?.daily[0].temp.max.rounded().formatted() ?? "0") ºC")
+                                Text("H: \(modelData.forecast?.daily[0].temp.max.rounded().formatted() ?? "0")ºC")
                                 Spacer()
-                                Text("L: \(modelData.forecast?.daily[0].temp.min.rounded().formatted() ?? "0") ºC")
+                                Text("Low: \(modelData.forecast?.daily[0].temp.min.rounded().formatted() ?? "0")ºC")
                                 Spacer()
                             }
                             Text("Feels Like: \((Int)(modelData.forecast!.current.feelsLike))ºC")
                                 .foregroundColor(.black)
                         }
                     }
+                    .padding(15)
                     Spacer()
-                    VStack(spacing:10){
+                    VStack(spacing:30){
                         ///wind speed, direction, humidity and pressure
                         Group {
                             VStack(spacing:50) {
@@ -89,6 +88,7 @@ struct CurrentWeatherView: View {
                     Spacer()
                 }
             }
+            .fontWeight(.medium)
         }
     }
 }

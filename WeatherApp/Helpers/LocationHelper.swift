@@ -1,13 +1,7 @@
-//
-//  LocationHelper.swift
-//  Coursework2
-//
-//  Created by G Lukka.
-//
-
 import Foundation
-
 import CoreLocation
+
+//get location from latitude and longitute
 func getLocFromLatLong(lat: Double, lon: Double) async -> String
 {
     var locationString: String
@@ -41,8 +35,8 @@ func getLocFromLatLong(lat: Double, lon: Double) async -> String
 
     return "Error getting Location"
 }
-
-class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject{
+//location manager used to ask for permission to access user location
+class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     var locationManager = CLLocationManager()
     @Published var authorizationStatus: CLAuthorizationStatus?
 
@@ -58,8 +52,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject{
             locationManager.requestLocation()
             break
 
-        case .restricted, .denied: // Location services currently unavailable.
+        case .restricted: // Location services currently unavailable.
             authorizationStatus = .restricted
+            break
+        case .denied:
             authorizationStatus = .denied
             break
 
@@ -73,7 +69,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject{
         }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-       }
+    }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error: \(error.localizedDescription)")
     }

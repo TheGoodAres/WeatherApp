@@ -4,7 +4,7 @@
 //
 //  Created by Robert-Dumitru Oprea on 09/04/2023.
 //
-
+//splashIcon and splashIcon2 image created using Bakery application
 import SwiftUI
 
 struct SplashView: View {
