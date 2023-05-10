@@ -14,10 +14,9 @@ struct PollutionView: View {
             Image("background")
                 .resizable()
                 .opacity(0.8)
-
                 .ignoresSafeArea()
-            VStack(spacing:80) {
-                VStack(spacing: 5) {
+            VStack {
+                VStack(spacing: 40) {
                     Spacer()
                     Text(modelData.location?.name ?? "No location available")
                         .multilineTextAlignment(.center)
@@ -33,6 +32,7 @@ struct PollutionView: View {
                         HStack {
                             Label {
                                 Text(modelData.forecast?.current.weather[0].weatherDescription.rawValue.capitalized ?? "No description available")
+                                    .font(.title3)
                                     .foregroundColor(.black)
                             } icon: {
                                 IconFromWebsite(url: modelData.forecast?.current.weather[0].icon ?? "01n.png")
@@ -41,7 +41,7 @@ struct PollutionView: View {
                         VStack(spacing: 40) {
                             HStack {
                                 Spacer()
-                                Text("H: \(modelData.forecast?.daily[0].temp.max.rounded().formatted() ?? "0") ºC")
+                                Text("High: \(modelData.forecast?.daily[0].temp.max.rounded().formatted() ?? "0") ºC")
                                 Spacer()
                                 Text("Low: \(modelData.forecast?.daily[0].temp.min.rounded().formatted() ?? "0") ºC")
                                 Spacer()
@@ -49,9 +49,13 @@ struct PollutionView: View {
                             Text("Feels Like: \((Int)(modelData.forecast!.current.feelsLike))ºC")
                                 .foregroundColor(.black)
                         }
+                            .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
+                            .fontWeight(/*@START_MENU_TOKEN@*/.semibold/*@END_MENU_TOKEN@*/)
 
                         Text("Air Quality Data:")
-                            .font(.system(size: 25, weight: .medium))
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .padding(.vertical, 10.0)
                     }
                     HStack {
                         Label {
@@ -59,43 +63,44 @@ struct PollutionView: View {
                         } icon: {
                             Image("so2")
                                 .resizable()
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
-                        }.labelStyle(VerticalLabelStyle())
+                                .frame(width: 65, height: 65)
+                        }
+                            .labelStyle(VerticalLabelStyle())
                             .padding()
+                            .accessibilityLabel("Sulfur Dioxide:\(modelData.airQuality?.list[0].components.no2.rounded().formatted() ?? "0.0") ")
 
                         Label {
                             Text("\(modelData.airQuality?.list[0].components.no.rounded().formatted() ?? "0.0")")
                         } icon: {
                             Image("no")
                                 .resizable()
-                                .scaledToFit()
-
-                                .frame(width: 50, height: 50)
-                        }.labelStyle(VerticalLabelStyle())
+                                .frame(width: 65, height: 65)
+                        }
+                            .labelStyle(VerticalLabelStyle())
                             .padding()
+                            .accessibilityLabel("Nitric Oxide: \(modelData.airQuality?.list[0].components.no.rounded().formatted() ?? "0.0")")
 
                         Label {
                             Text("\(modelData.airQuality?.list[0].components.co.rounded().formatted() ?? "0.0")")
                         } icon: {
                             Image("voc")
                                 .resizable()
-                                .scaledToFit()
-
-                                .frame(width: 50, height: 50)
-                        }.labelStyle(VerticalLabelStyle())
+                                .frame(width: 65, height: 65)
+                        }
+                            .labelStyle(VerticalLabelStyle())
                             .padding()
+                            .accessibilityLabel("Volatile Organic Compounds: \(modelData.airQuality?.list[0].components.co.rounded().formatted() ?? "0.0")")
 
                         Label {
                             Text("\(modelData.airQuality?.list[0].components.pm2_5.rounded().formatted() ?? "0.0")")
                         } icon: {
                             Image("pm")
                                 .resizable()
-                                .scaledToFit()
-
-                                .frame(width: 50, height: 50)
-                        }.labelStyle(VerticalLabelStyle())
+                                .frame(width: 65, height: 65)
+                        }
+                            .labelStyle(VerticalLabelStyle())
                             .padding()
+                            .accessibilityLabel("Promethium: \(modelData.airQuality?.list[0].components.pm2_5.rounded().formatted() ?? "0.0")")
                     }
 
                     Spacer()

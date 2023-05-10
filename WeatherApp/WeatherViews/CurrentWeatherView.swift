@@ -28,21 +28,21 @@ struct CurrentWeatherView: View {
                         .padding()
                         .font(.largeTitle)
                     VStack {
-                            Label {
-                                Text(modelData.forecast!.current.weather[0].weatherDescription.rawValue.capitalized)
-                                    .foregroundColor(.black)
-                                
-                            } icon: {
-                                IconFromWebsite(url: modelData.forecast?.current.weather[0].icon ?? "01n.png")
-                            }
+                        Label {
+                            Text(modelData.forecast!.current.weather[0].weatherDescription.rawValue.capitalized)
+                                .foregroundColor(.black)
+
+                        } icon: {
+                            IconFromWebsite(url: modelData.forecast?.current.weather[0].icon ?? "01n.png")
+                        }
                     }
                     VStack {
                         ///high, low and feels like temperature
-                        VStack(spacing:50) {
-                            
+                        VStack(spacing: 40) {
+
                             HStack {
                                 Spacer()
-                                Text("H: \(modelData.forecast?.daily[0].temp.max.rounded().formatted() ?? "0")ºC")
+                                Text("High: \(modelData.forecast?.daily[0].temp.max.rounded().formatted() ?? "0")ºC")
                                 Spacer()
                                 Text("Low: \(modelData.forecast?.daily[0].temp.min.rounded().formatted() ?? "0")ºC")
                                 Spacer()
@@ -50,18 +50,23 @@ struct CurrentWeatherView: View {
                             Text("Feels Like: \((Int)(modelData.forecast!.current.feelsLike))ºC")
                                 .foregroundColor(.black)
                         }
+                            .font(.title3)
+                            .fontWeight(.semibold)
                     }
-                    .padding(15)
+
+                        .padding(.top, 50.0)
                     Spacer()
-                    VStack(spacing:30){
+                    VStack(spacing: 30) {
                         ///wind speed, direction, humidity and pressure
                         Group {
-                            VStack(spacing:50) {
+                            VStack(spacing: 50) {
                                 HStack {
                                     Spacer()
-                                    Text("Wind Speed: \(modelData.forecast!.current.windSpeed.formatted())m/s")
+                                    Text("Wind Speed: \(modelData.forecast!.current.windSpeed.formatted()) m/s")
+                                        .accessibilityLabel("Wind Speed: \(modelData.forecast!.current.windSpeed.formatted()) meters per second")
                                     Spacer()
                                     Text("Direction: \(convertDegToCardinal(deg: modelData.forecast!.current.windDeg))")
+                                        .accessibilityLabel("Direction: \(returnLongCardinal(cardinal: convertDegToCardinal(deg: modelData.forecast!.current.windDeg))) " )
                                     Spacer()
                                 }
                                 HStack {
@@ -69,26 +74,38 @@ struct CurrentWeatherView: View {
                                     Text("Humidity: \(modelData.forecast!.current.humidity)%")
                                     Spacer()
                                     Text("Pressure: \(modelData.forecast!.current.pressure) hPg")
+                                        .accessibilityLabel("Pressure: \(modelData.forecast!.current.pressure) hectoPascals")
                                     Spacer()
                                 }
                             }
+                                .font(.title3)
+                                .padding(.bottom, 50.0)
                         }
                         ///sunset and sunrise times and icons
                         HStack {
                             Spacer()
-                            Image(systemName: "sunset.fill").renderingMode(.original)
-                            Text(getFormattedDate(from: modelData.forecast!.current.sunset ?? 0, type: 1))
+                            Group{
+                                Image(systemName: "sunset.fill").renderingMode(.original)
+                                    .accessibilityHidden(true)
+                                Text(getFormattedDate(from: modelData.forecast!.current.sunset ?? 0, type: 1))
+                            }
+                            .accessibilityLabel("Sunset at: \(getFormattedDate(from: modelData.forecast!.current.sunset ?? 0, type: 1))")
                             Spacer()
-                            Image(systemName: "sunrise.fill").renderingMode(.original)
-                            Text(getFormattedDate(from: modelData.forecast!.current.sunrise ?? 0, type: 1))
+                            Group{
+                                Image(systemName: "sunrise.fill").renderingMode(.original)
+                                    .accessibilityHidden(true)
+                                Text(getFormattedDate(from: modelData.forecast!.current.sunrise ?? 0, type: 1))
+                            }
+                            .accessibilityLabel("Sunrise at: \(getFormattedDate(from: modelData.forecast!.current.sunrise ?? 0, type: 1))")
                             Spacer()
                         }
-                        
+                            .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
+
                     }
                     Spacer()
                 }
             }
-            .fontWeight(.medium)
+                .fontWeight(.medium)
         }
     }
 }

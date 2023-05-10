@@ -24,6 +24,7 @@ struct DailyView: View {
                 }
                 Spacer()
                 Text("\(day.temp.max.rounded().formatted())°C/\(day.temp.min.rounded().formatted())°C")
+                    .accessibilityLabel("Temperature: maximum \(day.temp.max.rounded().formatted())°C, minimum \(day.temp.min.rounded().formatted())°C")
 
             }
                 .padding(25)

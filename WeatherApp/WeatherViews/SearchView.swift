@@ -11,6 +11,8 @@ import CoreLocation
 struct SearchView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var modelData: ModelData
+    @State private var displayError = false
+    @State private var error: Error?
     @State var location = ""
     var body: some View {
         Spacer()
@@ -31,23 +33,20 @@ struct SearchView: View {
                             let lon = placemarks?.first?.location?.coordinate.longitude {
                             Task {
                                 do {
-                                    try await modelData.loadData(lat: lat, lon: lon)
+                                    try await modelData.loadWeatherData(lat: lat, lon: lon)
                                     try await modelData.loadAirData(lat: lat, lon: lon)
                                 } catch {
                                     print(error)
-                                    DispatchQueue.main.async {
-                                        modelData.error = error
-                                    }
+                                    self.error = error
+                                    self.displayError = true
                                 }
                             }
                             modelData.currentLocationDisabled = true
                             dismiss()
                         }
                         print(error as Any)
-                        DispatchQueue.main.async {
-                            modelData.error = error
-                        }
-
+                        self.error = error
+                        self.displayError = true
 
                     }//GEOCorder
                 } //Commit
@@ -60,7 +59,21 @@ struct SearchView: View {
                     .font(.custom("Ariel", size: 26))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .cornerRadius(15) // TextField
+                if displayError {
+                    Group {
+                        Text("\(error?.localizedDescription ?? "Unknown Error") Please contact the developer.")
 
+                        Button("Dismiss") {
+                            displayError = false
+                            error = nil
+                        }
+                    }
+                        .padding()
+                        .background() {
+                        Color.gray
+                            .opacity(0.2)
+                    }
+                }
             }//VStak
 
 

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HourCondition: View {
     var current:Current
+    
     var body: some View {
         VStack{
             HStack{
@@ -21,9 +22,9 @@ struct HourCondition: View {
                     Text(current.weather[0].weatherDescription.rawValue.capitalized)
                         .multilineTextAlignment(.leading)
                 }
-                .padding(.trailing)
+//                .padding(.trailing)
             }
-            .padding()
+            .padding(25)
         }
     }
 }

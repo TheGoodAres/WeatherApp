@@ -17,6 +17,7 @@ struct ForecastView: View {
                 .resizable()
                 .opacity(0.8)
                 .ignoresSafeArea()
+                .accessibilityLabel("Background image of a clear sky")
             VStack {
                 Spacer()
                 ///display the location name
@@ -25,6 +26,7 @@ struct ForecastView: View {
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
                     .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                    .accessibilityLabel("Location: \(modelData.location?.name ?? "No location Available")")
                 ///For all the available daily data, they will be displayed using the DailyView() View
                 List {
                     ForEach(modelData.forecast!.daily) { day in

@@ -17,7 +17,7 @@ struct Home: View {
 
     var body: some View {
         ZStack {
-            Image("background2")
+            Image(decorative:"background2")
                 .resizable()
                 .opacity(0.8)
                 .ignoresSafeArea()
@@ -53,6 +53,7 @@ struct Home: View {
                             .resizable()
                             .frame(width: 50, height: 50)
                     }
+                    .accessibilityLabel("Use current location")
                 }
                 Spacer()
                 /// location name and formatted date of the data
@@ -72,13 +73,16 @@ struct Home: View {
                 VStack {
                     Spacer()
                     Text("Temp: \(modelData.forecast?.current.temp.rounded().formatted() ?? "0")°C")
+                        .accessibilityLabel("Temperature: \(modelData.forecast?.current.temp.rounded().formatted() ?? "0")°C")
                     Spacer()
                     Text("Humidity: \(modelData.forecast?.current.humidity ?? 0) %")
                     Spacer()
                     Text("Pressure: \(modelData.forecast?.current.pressure ?? 0) hPa")
+                        .accessibilityLabel("Pressure: \(modelData.forecast?.current.pressure ?? 0) hectoPascals")
                     Spacer()
                 }
-                .fontWeight(.medium)
+                .font(.title3)
+                .fontWeight(/*@START_MENU_TOKEN@*/.semibold/*@END_MENU_TOKEN@*/)
                 ///weather description and icon
                 HStack {
                     Label {
@@ -87,12 +91,12 @@ struct Home: View {
                         IconFromWebsite(url: modelData.forecast?.current.weather[0].icon ?? "01n.png")
                     }
                 }
-                .fontWeight(.medium)
+                    .fontWeight(.medium)
             }
         }
 
             .sheet(isPresented: $isSearchOpen) {
-            SearchView(showSheet: $isSearchOpen)
+            SearchView()
         }
         ///when this alert it's shown, it alerts that the app does not have permission to access the user's location. If guides the user to how to enable the permission, if the user presses the "Open Settings" button, the system app main page is opened.
         .alert(isPresented: $showLocationSettingsAlert) {
@@ -107,7 +111,7 @@ struct Home: View {
             Task {
                 if modelData.currentLocationDisabled {
                     do {
-                        try await modelData.loadData(lat: modelData.forecast?.lat ?? 0, lon: modelData.forecast?.lon ?? 0)
+                        try await modelData.loadWeatherData(lat: modelData.forecast?.lat ?? 0, lon: modelData.forecast?.lon ?? 0)
                         try await modelData.loadAirData(lat: modelData.forecast?.lat ?? 0, lon: modelData.forecast?.lon ?? 0)
                     } catch {
                         print(error)

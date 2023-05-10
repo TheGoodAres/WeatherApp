@@ -35,6 +35,8 @@ func getLocFromLatLong(lat: Double, lon: Double) async -> String
 
     return "Error getting Location"
 }
+
+
 //location manager used to ask for permission to access user location
 class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     var locationManager = CLLocationManager()

@@ -19,20 +19,19 @@ struct HourlyView: View {
             ///and then display the hourly condition using the HourCondition view
             ///
             VStack {
-
+                Spacer()
                 Text(modelData.location?.name ?? "No location available")
+                    .font(.largeTitle)
+                    .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
-                    .font(.title)
-
+                    .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                 List {
                     ForEach(modelData.forecast!.hourly) { hour in
 
                         HourCondition(current: hour)
-                            .frame(width: 350)
                     }
-                        .frame(width: 350)
                     ///used to format the conditionView inside the list
-                    .listRowInsets(.init(top: 0, leading: 25, bottom: 0, trailing: 0))
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                         .listRowBackground(Color.clear)
                         .background {
                         Color.white
@@ -40,7 +39,6 @@ struct HourlyView: View {
                     }
                 }
 
-                    .padding()
                     .background {
                     Color.white
                             .opacity(0.6)

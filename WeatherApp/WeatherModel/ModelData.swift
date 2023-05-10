@@ -35,7 +35,7 @@ class ModelData: ObservableObject {
             }
         }
 
-
+        //weather data
         if let savedForecast = UserDefaults.standard.data(forKey: "forecast") {
             if let decodedItems = try? JSONDecoder().decode(Forecast.self, from: savedForecast) {
                 forecast = decodedItems
@@ -43,6 +43,7 @@ class ModelData: ObservableObject {
 
             }
         }
+        //air quality
         if let savedAirQuality = UserDefaults.standard.data(forKey: "airQuality") {
             if let decodedItems = try? JSONDecoder().decode(AirQuality.self, from: savedAirQuality) {
                 airQuality = decodedItems
@@ -50,7 +51,7 @@ class ModelData: ObservableObject {
 
             }
         }
-
+        //location
         if let savedLocation = UserDefaults.standard.data(forKey: "location") {
             if let decodedItems = try? JSONDecoder().decode(Location.self, from: savedLocation) {
                 location = decodedItems
@@ -58,18 +59,24 @@ class ModelData: ObservableObject {
 
             }
         }
+        //currentLocationDisabled
         if let savedSearchedCity = UserDefaults.standard.data(forKey: "currentLocationDisabled") {
             if let decodedItems = try? JSONDecoder().decode(Bool.self, from: savedSearchedCity) {
                 currentLocationDisabled = decodedItems
             }
+        } else {
+            currentLocationDisabled = true
         }
-        if let savedLastFetchDate = UserDefaults.standard.data(forKey: "lastFetchedDate") {
+        //date when data was last fetched from OpenWeather API
+         if let savedLastFetchDate = UserDefaults.standard.data(forKey: "lastFetchedDate") {
             if let decodedItems = try? JSONDecoder().decode(Date.self, from: savedLastFetchDate) {
                 lastFetchDate = decodedItems
             }
         } else {
             lastFetchDate = Date(timeIntervalSince1970: 0)
         }
+        
+        
         if (!availableUserDefaults) {
             self.forecast = load("london.json")
             self.airQuality = loadLocalAir("air_pollution.json")
@@ -148,7 +155,7 @@ class ModelData: ObservableObject {
         }
     }
     //The following 2 functions will call the OpenWeather API and get the required data from it, once received, it will decode the data and then save it to UserDefaults
-    func loadData(lat: Double, lon: Double) async throws -> Forecast {
+    func loadWeatherData(lat: Double, lon: Double) async throws -> Forecast {
         if shouldUpdate(lat: lat, lon: lon) {
             let url = URL(string: "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(lon)&units=metric&appid=\(apiKey)")
             let session = URLSession(configuration: .default)
@@ -163,9 +170,9 @@ class ModelData: ObservableObject {
                     Task {
                         await self.updateLocation(lat: lat, lon: lon)
 
-                        self.saveToUserDefaults()
                         self.dataLoaded = true
                         self.lastFetchDate = Date()
+                        self.saveToUserDefaults()
 
                         print("Data Loaded")
                     }
@@ -223,7 +230,8 @@ class ModelData: ObservableObject {
                 if let lat = locationManager.locationManager.location?.coordinate.latitude, let lon = locationManager.locationManager.location?.coordinate.longitude {
                     if shouldUpdate(lat: lat, lon: lon) {
                         do {
-                            try await loadData(lat: lat, lon: lon)
+                            try await loadWeatherData(lat: lat, lon: lon)
+                            try await loadAirData(lat: lat, lon: lon)
                             await updateLocation(lat: lat, lon: lon)
                             DispatchQueue.main.async {
                                 self.dataLoaded = true

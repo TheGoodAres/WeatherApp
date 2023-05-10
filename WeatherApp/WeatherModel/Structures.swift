@@ -74,7 +74,7 @@ enum Main: String, Codable {
     case clear = "Clear"
     case clouds = "Clouds"
     case rain = "Rain"
-    case mist = "Mist"
+    case mist = "Mist"  
     case smoke = "Smoke"
     case haze = "Haze"
     case dust = "Dust"
