@@ -13,15 +13,15 @@ struct ForecastView: View {
     var body: some View {
         ZStack {
             
-            Image("background2")
+            Image(decorative: modelData.getImageName())
                 .resizable()
-                .opacity(0.8)
                 .ignoresSafeArea()
                 .accessibilityLabel("Background image of a clear sky")
             VStack {
                 Spacer()
                 ///display the location name
                 Text(modelData.location?.name ?? "No location available")
+                    .foregroundColor(.black)
                     .font(.largeTitle)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -37,14 +37,14 @@ struct ForecastView: View {
                         .listRowBackground(Color.clear)
                         .background {
                         Color.white
-                                .opacity(0.3)
+                                .opacity(0.6)
                     }
                 }
-
-                    .background {
-                    Color.white
-                            .opacity(0.6)
-                }
+                .foregroundColor(.black )
+//                    .background {
+//                    Color.white
+//                            .opacity(0.4)
+//                }
                     .scrollContentBackground(.hidden)
             }
         }

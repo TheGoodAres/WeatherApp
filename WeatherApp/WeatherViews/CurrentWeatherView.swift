@@ -11,9 +11,8 @@ struct CurrentWeatherView: View {
     @EnvironmentObject var modelData: ModelData
     var body: some View {
         ZStack {
-            Image("background2")
+            Image(decorative:modelData.getImageName())
                 .resizable()
-                .opacity(0.8)
                 .ignoresSafeArea()
 
             VStack {
@@ -30,7 +29,6 @@ struct CurrentWeatherView: View {
                     VStack {
                         Label {
                             Text(modelData.forecast!.current.weather[0].weatherDescription.rawValue.capitalized)
-                                .foregroundColor(.black)
 
                         } icon: {
                             IconFromWebsite(url: modelData.forecast?.current.weather[0].icon ?? "01n.png")
@@ -48,7 +46,6 @@ struct CurrentWeatherView: View {
                                 Spacer()
                             }
                             Text("Feels Like: \((Int)(modelData.forecast!.current.feelsLike))ºC")
-                                .foregroundColor(.black)
                         }
                             .font(.title3)
                             .fontWeight(.semibold)
@@ -105,6 +102,7 @@ struct CurrentWeatherView: View {
                     Spacer()
                 }
             }
+            .foregroundColor(.black)
                 .fontWeight(.medium)
         }
     }

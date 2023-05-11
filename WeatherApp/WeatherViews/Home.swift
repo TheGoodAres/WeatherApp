@@ -17,7 +17,7 @@ struct Home: View {
 
     var body: some View {
         ZStack {
-            Image(decorative:"background2")
+            Image(decorative: modelData.getImageName())
                 .resizable()
                 .opacity(0.8)
                 .ignoresSafeArea()
@@ -30,6 +30,7 @@ struct Home: View {
                         isSearchOpen = true
                     } label: {
                         Text("Change location")
+                            .foregroundColor(.black)
                             .multilineTextAlignment(.center)
                             .font(.largeTitle)
                             .bold()
@@ -51,9 +52,10 @@ struct Home: View {
                         ///when the current location is turned off (searchedCity == true), the presivious icon will be slashed
                         Image(systemName: modelData.currentLocationDisabled ? "location.slash.circle" : "location.circle")
                             .resizable()
+                            .foregroundColor(.black)
                             .frame(width: 50, height: 50)
                     }
-                    .accessibilityLabel("Use current location")
+                        .accessibilityLabel("Use current location")
                 }
                 Spacer()
                 /// location name and formatted date of the data
@@ -81,8 +83,8 @@ struct Home: View {
                         .accessibilityLabel("Pressure: \(modelData.forecast?.current.pressure ?? 0) hectoPascals")
                     Spacer()
                 }
-                .font(.title3)
-                .fontWeight(/*@START_MENU_TOKEN@*/.semibold/*@END_MENU_TOKEN@*/)
+                    .font(.title3)
+                    .fontWeight(/*@START_MENU_TOKEN@*/.semibold/*@END_MENU_TOKEN@*/)
                 ///weather description and icon
                 HStack {
                     Label {
@@ -93,6 +95,8 @@ struct Home: View {
                 }
                     .fontWeight(.medium)
             }
+            .foregroundColor(.black)
+
         }
 
             .sheet(isPresented: $isSearchOpen) {

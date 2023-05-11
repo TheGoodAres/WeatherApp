@@ -11,7 +11,7 @@ struct PollutionView: View {
     @EnvironmentObject var modelData: ModelData
     var body: some View {
         ZStack {
-            Image("background")
+            Image(decorative:modelData.getImageName())
                 .resizable()
                 .opacity(0.8)
                 .ignoresSafeArea()

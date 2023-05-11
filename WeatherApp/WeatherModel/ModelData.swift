@@ -68,15 +68,15 @@ class ModelData: ObservableObject {
             currentLocationDisabled = true
         }
         //date when data was last fetched from OpenWeather API
-         if let savedLastFetchDate = UserDefaults.standard.data(forKey: "lastFetchedDate") {
+        if let savedLastFetchDate = UserDefaults.standard.data(forKey: "lastFetchedDate") {
             if let decodedItems = try? JSONDecoder().decode(Date.self, from: savedLastFetchDate) {
                 lastFetchDate = decodedItems
             }
         } else {
             lastFetchDate = Date(timeIntervalSince1970: 0)
         }
-        
-        
+
+
         if (!availableUserDefaults) {
             self.forecast = load("london.json")
             self.airQuality = loadLocalAir("air_pollution.json")
@@ -189,7 +189,7 @@ class ModelData: ObservableObject {
         }
 
     }
-    
+
     ///if it should update, it will get the airQuality data, decode it and set it , save the currrent time as the lastFetchDate and it will save all the data to userDefaultts
     func loadAirData(lat: Double, lon: Double) async throws -> AirQuality {
         if shouldUpdate(lat: lat, lon: lon) {
@@ -280,6 +280,30 @@ class ModelData: ObservableObject {
         } else {
             print("Should Update")
             return true
+        }
+    }
+
+    func getImageName() -> String {
+        switch forecast?.current.weather[0].main {
+            case .clear, .none:
+            return "sun"
+        case .clouds, .squall:
+            return "clouds"
+        case .rain, .drizzle:
+            return "rain"
+        case .mist, .fog:
+            return "mist"
+        case .smoke, .haze, .ash:
+            return "smoke"
+        case .dust, .sand:
+            return "dust"
+            case .tornado:
+            return "tornado"//
+        case .snow:
+            return "snow"
+        case .thunderstorm:
+            return "thunderstorm"
+
         }
     }
 }

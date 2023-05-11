@@ -71,17 +71,17 @@ struct Weather: Codable {
 }
 
 enum Main: String, Codable {
-    case clear = "Clear"
-    case clouds = "Clouds"
-    case rain = "Rain"
-    case mist = "Mist"  
-    case smoke = "Smoke"
-    case haze = "Haze"
-    case dust = "Dust"
-    case fog = "Fog"
-    case sand = "Sand"
-    case ash = "Ash"
-    case squall = "Squall"
+    case clear = "Clear"//
+    case clouds = "Clouds"//
+    case rain = "Rain"//
+    case mist = "Mist"  //
+    case smoke = "Smoke"//
+    case haze = "Haze"//
+    case dust = "Dust"//
+    case fog = "Fog"//
+    case sand = "Sand"//
+    case ash = "Ash"//
+    case squall = "Squall"//
     case tornado = "Tornado"
     case snow = "Snow"
     case drizzle = "Drizzle"
@@ -89,13 +89,13 @@ enum Main: String, Codable {
 }
 
 enum Description: String, Codable {
-    case brokenClouds = "broken clouds"
+    case brokenClouds = "broken clouds"//
     case clearSky = "clear sky"
-    case fewClouds = "few clouds"
+    case fewClouds = "few clouds"//
     case lightRain = "light rain"
-    case moderateRain = "moderate rain"
-    case overcastClouds = "overcast clouds"
-    case scatteredClouds = "scattered clouds"
+    case moderateRain = "moderate rain"//
+    case overcastClouds = "overcast clouds"//
+    case scatteredClouds = "scattered clouds"//
     case thunderstormWithLightRain = "thunderstorm with light rain"
     case thunderstormWithRain = "thunderstorm with rain"
     case thunderstormWithHeavyRain = "thunderstorm with heavy rain"
@@ -142,10 +142,10 @@ enum Description: String, Codable {
     case volcanicAsh = "volcanic ash"
     case squalls = "squalls"
     case tornado = "tornado"
-    case fewClouds1125 = "few clouds: 11-25%"
-    case scatteredClouds2550 = "scattered clouds: 25-50%"
-    case brokenClouds5184 = "broken clouds: 51-84%"
-    case overcastClouds85100 = "overcast clouds: 85-100%"
+    case fewClouds1125 = "few clouds: 11-25%"//
+    case scatteredClouds2550 = "scattered clouds: 25-50%"//
+    case brokenClouds5184 = "broken clouds: 51-84%"//
+    case overcastClouds85100 = "overcast clouds: 85-100%"//
 }
 
 // MARK: - Daily

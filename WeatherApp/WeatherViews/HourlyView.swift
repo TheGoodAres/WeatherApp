@@ -11,9 +11,8 @@ struct HourlyView: View {
     @EnvironmentObject var modelData: ModelData
     var body: some View {
         ZStack {
-            Image("background")
+            Image(decorative: modelData.getImageName())
                 .resizable()
-                .opacity(0.8)
                 .ignoresSafeArea()
             ///The following VStack will display the name of the location of the data
             ///and then display the hourly condition using the HourCondition view
@@ -21,6 +20,7 @@ struct HourlyView: View {
             VStack {
                 Spacer()
                 Text(modelData.location?.name ?? "No location available")
+                    .foregroundColor(.black)
                     .font(.largeTitle)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -33,18 +33,17 @@ struct HourlyView: View {
                     ///used to format the conditionView inside the list
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                         .listRowBackground(Color.clear)
+
                         .background {
                         Color.white
-                            .opacity(0.3)
-                    }
-                }
-
-                    .background {
-                    Color.white
                             .opacity(0.6)
+                    }
+
                 }
-                    .scrollContentBackground(.hidden)
+                    .foregroundColor(.black)
             }
+                .scrollContentBackground(.hidden)
+
         }
     }
 }
