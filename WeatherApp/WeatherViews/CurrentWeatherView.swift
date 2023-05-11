@@ -13,6 +13,7 @@ struct CurrentWeatherView: View {
         ZStack {
             Image(decorative:modelData.getImageName())
                 .resizable()
+                .opacity(0.8)
                 .ignoresSafeArea()
 
             VStack {
