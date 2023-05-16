@@ -155,7 +155,7 @@ class ModelData: ObservableObject {
         }
     }
     //The following 2 functions will call the OpenWeather API and get the required data from it, once received, it will decode the data and then save it to UserDefaults
-    func loadWeatherData(lat: Double, lon: Double) async throws -> Forecast {
+    func loadWeatherData(lat: Double, lon: Double) async throws {
         if shouldUpdate(lat: lat, lon: lon) {
             let url = URL(string: "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(lon)&units=metric&appid=\(apiKey)")
             let session = URLSession(configuration: .default)
@@ -166,7 +166,6 @@ class ModelData: ObservableObject {
                 let forecastData = try JSONDecoder().decode(Forecast.self, from: data)
                 DispatchQueue.main.async {
                     self.forecast = forecastData
-
                     Task {
                         await self.updateLocation(lat: lat, lon: lon)
 
@@ -177,21 +176,17 @@ class ModelData: ObservableObject {
                         print("Data Loaded")
                     }
                 }
-                return forecastData
             } catch {
                 DispatchQueue.main.async {
                     self.error = error
                 }
                 throw error
             }
-        } else {
-            return self.forecast!
         }
-
     }
 
     ///if it should update, it will get the airQuality data, decode it and set it , save the currrent time as the lastFetchDate and it will save all the data to userDefaultts
-    func loadAirData(lat: Double, lon: Double) async throws -> AirQuality {
+    func loadAirData(lat: Double, lon: Double) async throws {
         if shouldUpdate(lat: lat, lon: lon) {
 
             let url = URL(string: "https://api.openweathermap.org/data/2.5/air_pollution?lat=\(lat)&lon=\(lon)&units=metric&appid=\(apiKey)")
@@ -207,8 +202,6 @@ class ModelData: ObservableObject {
                     self.saveToUserDefaults()
 
                 }
-
-                return airData
             } catch {
                 DispatchQueue.main.async {
                     self.error = error
@@ -216,8 +209,6 @@ class ModelData: ObservableObject {
                 throw error
             }
 
-        } else {
-            return self.airQuality!
         }
     }
 ///if the current location isn't disabled and the authorization status is authorizedWhenInUse or authorizedAlways, it will get the current coordinates of the users location
@@ -285,7 +276,7 @@ class ModelData: ObservableObject {
 
     func getImageName() -> String {
         switch forecast?.current.weather[0].main {
-            case .clear, .none:
+        case .clear, .none:
             return "sun"
         case .clouds, .squall:
             return "clouds"
@@ -297,7 +288,7 @@ class ModelData: ObservableObject {
             return "smoke"
         case .dust, .sand:
             return "dust"
-            case .tornado:
+        case .tornado:
             return "tornado"//
         case .snow:
             return "snow"

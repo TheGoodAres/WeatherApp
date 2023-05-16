@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D427E17F2A0F87BC0036A4F4 /* LocationSearchSevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D427E17E2A0F87BC0036A4F4 /* LocationSearchSevice.swift */; };
+		D427E1812A0F88F60036A4F4 /* testView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D427E1802A0F88F50036A4F4 /* testView.swift */; };
 		D429B1B429E1D28E002B4A63 /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D429B1B329E1D28E002B4A63 /* CurrentWeatherView.swift */; };
 		D429B1B629E20EDC002B4A63 /* HourCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D429B1B529E20EDC002B4A63 /* HourCondition.swift */; };
 		D429B1B829E2100A002B4A63 /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D429B1B729E2100A002B4A63 /* HourlyView.swift */; };
@@ -28,6 +30,7 @@
 		D475FFAA29E4551E0041E018 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D475FFA929E4551E0041E018 /* CustomTabView.swift */; };
 		D4944E562A0C403E00A0EC9A /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4944E552A0C403E00A0EC9A /* Photos.swift */; };
 		D4AD1F3529E8A980004811BC /* CustomImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AD1F3429E8A980004811BC /* CustomImageLoader.swift */; };
+		D4BD21782A13AAD300F860A4 /* ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BD21772A13AAD300F860A4 /* ToDo.swift */; };
 		D4C5D0D329E23D66003AB8E6 /* ForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C5D0D229E23D66003AB8E6 /* ForecastView.swift */; };
 		D4C5D0D529E23D93003AB8E6 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C5D0D429E23D93003AB8E6 /* DailyView.swift */; };
 		D4C5D0D729E2C1A8003AB8E6 /* PollutionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C5D0D629E2C1A8003AB8E6 /* PollutionView.swift */; };
@@ -35,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D427E17E2A0F87BC0036A4F4 /* LocationSearchSevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSevice.swift; sourceTree = "<group>"; };
+		D427E1802A0F88F50036A4F4 /* testView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testView.swift; sourceTree = "<group>"; };
 		D429B1B329E1D28E002B4A63 /* CurrentWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherView.swift; sourceTree = "<group>"; };
 		D429B1B529E20EDC002B4A63 /* HourCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourCondition.swift; sourceTree = "<group>"; };
 		D429B1B729E2100A002B4A63 /* HourlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyView.swift; sourceTree = "<group>"; };
@@ -57,6 +62,7 @@
 		D475FFA929E4551E0041E018 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		D4944E552A0C403E00A0EC9A /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 		D4AD1F3429E8A980004811BC /* CustomImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageLoader.swift; sourceTree = "<group>"; };
+		D4BD21772A13AAD300F860A4 /* ToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo.swift; sourceTree = "<group>"; };
 		D4C5D0D229E23D66003AB8E6 /* ForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastView.swift; sourceTree = "<group>"; };
 		D4C5D0D429E23D93003AB8E6 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
 		D4C5D0D629E2C1A8003AB8E6 /* PollutionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollutionView.swift; sourceTree = "<group>"; };
@@ -135,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				D44DCAB329E1C2F000E12021 /* Utility.swift */,
+				D427E17E2A0F87BC0036A4F4 /* LocationSearchSevice.swift */,
+				D4BD21772A13AAD300F860A4 /* ToDo.swift */,
 				D44DCAB129E1C2E400E12021 /* WindDirHelper.swift */,
 				D44DCAAF29E1C2DC00E12021 /* LocationHelper.swift */,
 			);
@@ -161,6 +169,7 @@
 				D44DCAB729E1C46800E12021 /* Home.swift */,
 				D4C5D0D429E23D93003AB8E6 /* DailyView.swift */,
 				D44DCAB929E1CAB000E12021 /* SearchView.swift */,
+				D427E1802A0F88F50036A4F4 /* testView.swift */,
 				D429B1B329E1D28E002B4A63 /* CurrentWeatherView.swift */,
 				D429B1B529E20EDC002B4A63 /* HourCondition.swift */,
 				D429B1B729E2100A002B4A63 /* HourlyView.swift */,
@@ -245,10 +254,13 @@
 				D4C5D0D529E23D93003AB8E6 /* DailyView.swift in Sources */,
 				D475FFAA29E4551E0041E018 /* CustomTabView.swift in Sources */,
 				D429B1B829E2100A002B4A63 /* HourlyView.swift in Sources */,
+				D4BD21782A13AAD300F860A4 /* ToDo.swift in Sources */,
 				D44DCAA229E1ADEF00E12021 /* AirStructures.swift in Sources */,
 				D429B1B629E20EDC002B4A63 /* HourCondition.swift in Sources */,
 				D44DCAAE29E1BFC500E12021 /* Structures.swift in Sources */,
+				D427E1812A0F88F60036A4F4 /* testView.swift in Sources */,
 				D4944E562A0C403E00A0EC9A /* Photos.swift in Sources */,
+				D427E17F2A0F87BC0036A4F4 /* LocationSearchSevice.swift in Sources */,
 				D44DCAB429E1C2F000E12021 /* Utility.swift in Sources */,
 				D4AD1F3529E8A980004811BC /* CustomImageLoader.swift in Sources */,
 				D44DCAB829E1C46800E12021 /* Home.swift in Sources */,
@@ -400,8 +412,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -435,8 +446,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

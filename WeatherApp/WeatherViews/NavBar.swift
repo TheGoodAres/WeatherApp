@@ -52,6 +52,11 @@ struct NavBar: View {
                 }
             }
                 .tag(4)
+            
+            testView()
+                .tabItem{
+                    Text("Test")
+                }
         }.onAppear {
             UITabBar.appearance().isTranslucent = false
 
@@ -61,8 +66,3 @@ struct NavBar: View {
     }
 }
 
-struct NavBar_Previews: PreviewProvider {
-    static var previews: some View {
-        NavBar()
-    }
-}

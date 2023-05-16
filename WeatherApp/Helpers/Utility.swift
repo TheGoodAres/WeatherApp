@@ -32,10 +32,10 @@ func getFormattedDate(from date: Int, type: Int) -> String {
 struct IconFromWebsite: View {
     var url: String
     var body: some View {
-        if let imageUrl = URL(string:"https://openweathermap.org/img/wn/\(url)@2x.png"){
+        if let imageUrl = URL(string: "https://openweathermap.org/img/wn/\(url)@2x.png") {
             CustomAsyncImage(url: imageUrl)
-            .frame(width:75, height: 75)
-        } 
+                .frame(width: 75, height: 75)
+        }
     }
 }
 // Struct used to customise the Label view, it makes the icon and the text stack vertically rather than horizontally
@@ -51,13 +51,32 @@ struct VerticalLabelStyle: LabelStyle {
 
 
 
-struct Location:Codable {
+struct Location: Codable {
     let name: String
     let latitude: Double
     let longitude: Double
     enum CodingKeys: String, CodingKey {
-           case name
-           case latitude
-           case longitude
-       }
+        case name
+        case latitude
+        case longitude
+    }
+}
+
+
+func uvIntensity(index: Double) -> String {
+    var uvIntensity = "UV Index:  \(String(format: "%.2f", index)) "
+    if (index < 0) {
+        uvIntensity += "Invalid"
+    } else if (index <= 2) {
+        uvIntensity += "Low"
+    } else if (index <= 5) {
+        uvIntensity += "Moderate"
+    } else if (index <= 7) {
+        uvIntensity += "High"
+    } else if (index <= 10) {
+        uvIntensity += "Very High"
+    } else {
+        uvIntensity += "Extreme"
+    }
+    return uvIntensity
 }

@@ -87,18 +87,22 @@ struct CurrentWeatherView: View {
                                     .accessibilityHidden(true)
                                 Text(getFormattedDate(from: modelData.forecast!.current.sunset ?? 0, type: 1))
                             }
-                            .accessibilityLabel("Sunset at: \(getFormattedDate(from: modelData.forecast!.current.sunset ?? 0, type: 1))")
+                            .accessibilityLabel("Sunset at: \(getFormattedDate(from: modelData.forecast?.current.sunset ?? 0, type: 1))")
                             Spacer()
                             Group{
                                 Image(systemName: "sunrise.fill").renderingMode(.original)
                                     .accessibilityHidden(true)
-                                Text(getFormattedDate(from: modelData.forecast!.current.sunrise ?? 0, type: 1))
+                                Text(getFormattedDate(from: modelData.forecast?.current.sunrise ?? 0, type: 1))
                             }
                             .accessibilityLabel("Sunrise at: \(getFormattedDate(from: modelData.forecast!.current.sunrise ?? 0, type: 1))")
                             Spacer()
                         }
-                            .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
-
+                        .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
+                        Group{
+                            Text(uvIntensity(index: modelData.forecast!.current.uvi))
+                           
+                        }.font(.title3)
+                            .fontWeight(.medium)
                     }
                     Spacer()
                 }

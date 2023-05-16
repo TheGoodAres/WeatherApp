@@ -95,7 +95,7 @@ struct Home: View {
                 }
                     .fontWeight(.medium)
             }
-            .foregroundColor(.black)
+                .foregroundColor(.black)
 
         }
 
